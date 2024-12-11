@@ -8,8 +8,6 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-
-	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type RetornoAPI struct {
@@ -31,7 +29,6 @@ func main() {
 		r.Get("/{cep}", GetCEP)
 	})
 
-	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 	http.ListenAndServe(":8000", r)
 }
 
@@ -84,12 +81,14 @@ func GetCEP_brasilApi(cep string) string {
 	}
 
 	jsonData := make(map[string]interface{})
-	jsonData["tempo_requisicao"] = duration
-	jsonData["api_acatada"] = "brasil_api"
-	jsonData["Cep"] = retorno.Cep
-	jsonData["City"] = retorno.City
-	jsonData["Street"] = retorno.Street
-	jsonData["Service"] = retorno.Service
+	jsonData["tempo_requisicao_ms"] = float64(duration) / 1000000
+	jsonData["api_acatada"] = "via_cep"
+	jsonData["cep"] = retorno.Cep
+	jsonData["state"] = retorno.State
+	jsonData["neighborhood"] = retorno.Neighborhood
+	jsonData["city"] = retorno.City
+	jsonData["street"] = retorno.Street
+	jsonData["service"] = retorno.Service
 
 	json, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
@@ -120,12 +119,14 @@ func GetCEP_viaCEP(cep string) string {
 	}
 
 	jsonData := make(map[string]interface{})
-	jsonData["tempo_requisicao"] = duration
+	jsonData["tempo_requisicao_ms"] = float64(duration) / 1000000
 	jsonData["api_acatada"] = "via_cep"
-	jsonData["Cep"] = retorno.Cep
-	jsonData["City"] = retorno.City
-	jsonData["Street"] = retorno.Street
-	jsonData["Service"] = retorno.Service
+	jsonData["cep"] = retorno.Cep
+	jsonData["state"] = retorno.State
+	jsonData["neighborhood"] = retorno.Neighborhood
+	jsonData["city"] = retorno.City
+	jsonData["street"] = retorno.Street
+	jsonData["service"] = retorno.Service
 
 	json, err := json.MarshalIndent(jsonData, "", "  ")
 	if err != nil {
