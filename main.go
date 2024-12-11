@@ -54,9 +54,8 @@ func GetCEP(w http.ResponseWriter, r *http.Request) {
 	case msg := <-canal_api_2: // resposta da ViaCEP API
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(msg)
-
-		// case <-time.After(time.Second * 3): // Timeout após 3 segundos
-		// 	log.Println("timeout")
+	case <-time.After(time.Second * 1):
+		println("timeout")
 	}
 }
 
