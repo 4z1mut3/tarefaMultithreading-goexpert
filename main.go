@@ -47,13 +47,14 @@ func GetCEP(w http.ResponseWriter, r *http.Request) {
 
 	// Usar select para esperar pelas respostas das APIs
 	select {
-	case msg := <-canal_api_1: // resposta da Brasil API
+	case msg := <-canal_api_1: // resposta da viacep
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(msg)
 
-	case msg := <-canal_api_2: // resposta da ViaCEP API
+	case msg := <-canal_api_2: // resposta da Brasil API
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(msg)
+
 	case <-time.After(time.Second * 1):
 		println("timeout")
 	}
